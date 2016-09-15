@@ -8,7 +8,7 @@ namespace HangmanAlfa
 {
     class Program
     {
-        //PASCALTORSDAG
+        //
         static string playerName;
         static int lives = 7;
         //static string attempts;
