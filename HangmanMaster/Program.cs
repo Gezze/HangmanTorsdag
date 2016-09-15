@@ -16,6 +16,7 @@ namespace HangmanAlfa
         static string guessedLetter;
         static int levelChosen;
         static string tryAgain;
+        
 
         static void Main(string[] args)
         {
@@ -30,7 +31,7 @@ namespace HangmanAlfa
                 Difficulty();
                 WordGenerator();
                 //CountLetters();
-                GuessedWord();
+                GuessedLetter();
 
 
             }                                   //HÄR SLUTAR SPEL-LOOPEN
@@ -78,7 +79,7 @@ namespace HangmanAlfa
             //kontrolleras att det är minst 3 bokstäver långt
 
 
-            Console.WriteLine("Enter your name: ");                     //MIN TRE BOKSTÄVER I Namnet
+            Console.Write("Enter your name: ");                     //MIN TRE BOKSTÄVER I Namnet
             playerName = Console.ReadLine();
             while (playerName.Length < 3)
             {
@@ -125,18 +126,29 @@ namespace HangmanAlfa
             // ska slumpa ett ord från en ordbank, 
             //utvecklas senare med array när vi har fler ord
 
+            string[] easyWords = new string[3];
+            easyWords[1] = "waterboy";
+
+            string[] normalWords = new string[3];
+            normalWords[1] = "flower";
+
+            string[] hardWords = new string[3];
+            hardWords[1] = "jazz";
+
+
+
             if (levelChosen == 1)
             {
-                secretWord = "waterboy";
+                secretWord = easyWords[1];
             }
             else if (levelChosen == 2)
             {
-                secretWord = "flower";
+                secretWord = normalWords[1];
             }
 
             else if (levelChosen == 3)
             {
-                secretWord = "jazz";
+                secretWord = hardWords[1];
             }
             return secretWord;
         }
@@ -151,14 +163,20 @@ namespace HangmanAlfa
             // presenterar antal bokstäver i ordet
             int wordCharacters;
             return wordCharacters = secretWord.Length;
+            
         }
-        static void GuessedWord()
+        static void GuessedLetter()
         {
             Console.WriteLine("The word has " + CountLetters() + " letters in it.");
-            Console.WriteLine("Guess a word!"); //Kommer bytas ut mot en bokstav senare
+            for (int i = 0; i < secretWord.Length; i++)
+            {
+                Console.Write("*");
+            }
+            Console.WriteLine("\nGuess a letter!"); //Kommer bytas ut mot en bokstav senare
             guessedLetter = Console.ReadLine();
             if (guessedLetter.ToLower() == secretWord)
             {
+
                 GameWon();
             }
 
@@ -181,10 +199,9 @@ namespace HangmanAlfa
             //Lives(false);
             lives--;
             Console.WriteLine("You have " + lives + " lives left");
-            Console.ReadLine();
             if (lives > 0)
             {
-                GuessedWord();
+                GuessedLetter();
             }
             else
             {
@@ -245,3 +262,7 @@ namespace HangmanAlfa
     }
 
 }
+
+			
+
+			
