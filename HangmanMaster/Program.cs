@@ -16,6 +16,7 @@ namespace HangmanAlfa
         static string guessedLetter;
         static int levelChosen;
         static string tryAgain;
+        static string[] maskedWord;
         
 
         static void Main(string[] args)
@@ -52,7 +53,8 @@ namespace HangmanAlfa
         static void MenuStart()
         {
             // Låter spelaren välja mellan 1 och 2
-            Console.WriteLine("1: Start");
+            Console.Clear();
+            Console.WriteLine("\n1: Start");
             Console.WriteLine("2: How To");
             Console.WriteLine("3: Quit");
             string input = Console.ReadLine();
@@ -97,6 +99,7 @@ namespace HangmanAlfa
 
             while (levelChosenLoop)                          ///HÄR STARTAR LOOPEN FÖR CHOSEN LEVEL                                                                           
             {
+                Console.Clear();
                 Console.WriteLine("Choose level");
                 Console.WriteLine("1: Easy");
                 Console.WriteLine("2: Normal");
@@ -167,10 +170,14 @@ namespace HangmanAlfa
         }
         static void GuessedLetter()
         {
+            maskedWord = new string[secretWord.Length];
+            Console.Clear();
             Console.WriteLine("The word has " + CountLetters() + " letters in it.");
-            for (int i = 0; i < secretWord.Length; i++)
+            for (int i = 0; i < maskedWord.Length; i++)
+
             {
-                Console.Write("*");
+                maskedWord[i] = "*";
+                Console.Write(maskedWord[i]);
             }
             Console.WriteLine("\nGuess a letter!"); //Kommer bytas ut mot en bokstav senare
             guessedLetter = Console.ReadLine();
@@ -224,7 +231,9 @@ namespace HangmanAlfa
         static void GameWon()
         {
             // Visar ett meddelande om vinst
+            Console.Clear();
             Console.WriteLine("Good job " + playerName + "!");
+            Console.WriteLine("The word is " + secretWord);
             Console.ReadLine();
             TryAgain();
         }
@@ -255,7 +264,13 @@ namespace HangmanAlfa
         }
         static void HowTo()
         {
-            Console.WriteLine("Regler and shit");
+            Console.Clear();
+            Console.WriteLine("\n*******************RULES*************************");
+            Console.WriteLine("The goal of the game is to guess the hidden word.");
+            Console.WriteLine("To do this you type in one letter at a time.");
+            Console.WriteLine("If a correct letter is chosen it will be placed in the word.");
+            Console.WriteLine("When the wrong letter is chosen you lose a life.");
+            Console.WriteLine("When your lives reach 0 or the word is completed the game will end.");
             Console.ReadLine();
             MenuStart();
         }
