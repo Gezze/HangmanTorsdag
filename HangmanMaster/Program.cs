@@ -13,19 +13,19 @@ namespace HangmanAlfa
         static int lives = 7;
         //static string attempts;
         static string secretWord;
-        static string guessedLetter;
+       // static string guessedLetter;
         static int levelChosen;
-        static string tryAgain;
         static string[] maskedWord;
-        
+        static bool isTryAgain = true;
+
+
 
         static void Main(string[] args)
         {
             Welcome();
 
-            bool tryAgain = true;
 
-            while (tryAgain)                    ///HÄR STARTAR SPEL-LOOPEN
+            while (isTryAgain)                    ///HÄR STARTAR SPEL-LOOPEN
             {
                 PlayerName();
                 MenuStart();
@@ -33,13 +33,14 @@ namespace HangmanAlfa
                 WordGenerator();
                 //CountLetters();
                 GuessedLetter();
+                TryAgain();
 
 
             }                                   //HÄR SLUTAR SPEL-LOOPEN
             //ShowLetter();
             //IncorrectLetter();
             // ShowWrong();
-            //GameWon();
+            
             //GameLost();
             //TryAgain();
             //GameEngine();
@@ -58,16 +59,23 @@ namespace HangmanAlfa
             Console.WriteLine("2: How To");
             Console.WriteLine("3: Quit");
             string input = Console.ReadLine();
-            int inputInt = int.Parse(input); // behöver felhantering
-
-            switch (inputInt)
+            int inputInt = int.Parse(input);
+            while (inputInt>3 || inputInt<1)
+            
             {
-                case 1: WordGenerator(); break;
-                case 2: HowTo(); break;
-                case 3: Quit(); break;
-                default: Console.WriteLine("Choose 1,2 or 3!"); Console.ReadLine(); MenuStart(); break;
-
+                Console.WriteLine("Choose 1,2 or 3!");
+                input = Console.ReadLine();
+                inputInt = int.Parse(input);
             }
+                 switch (inputInt)
+                {
+                    case 1: WordGenerator(); break;
+                    case 2: HowTo(); break;
+                    case 3: Quit(); break;
+                    default: break;
+
+                }
+            
             //Console.ReadLine();  // ska lägga till en if sats,
         }
         static void Quit()
@@ -124,7 +132,7 @@ namespace HangmanAlfa
 
 
 
-        static string WordGenerator()                           ///HÄR SKAPAS OLIKA ORD PER SVÅRHETSGRAD
+        static void WordGenerator()                           ///HÄR SKAPAS OLIKA ORD PER SVÅRHETSGRAD
         {
             // ska slumpa ett ord från en ordbank, 
             //utvecklas senare med array när vi har fler ord
@@ -153,7 +161,7 @@ namespace HangmanAlfa
             {
                 secretWord = hardWords[1];
             }
-            return secretWord;
+            
         }
 
         static void Lives(bool letterCorrect)
@@ -161,24 +169,49 @@ namespace HangmanAlfa
             // hanterar liven, utvecklas med if senare
             Console.WriteLine(letterCorrect);
         }
-        static int CountLetters()
-        {
-            // presenterar antal bokstäver i ordet
-            int wordCharacters;
-            return wordCharacters = secretWord.Length;
-            
-        }
+        
         static void GuessedLetter()
         {
             maskedWord = new string[secretWord.Length];
-            Console.Clear();
-            Console.WriteLine("The word has " + CountLetters() + " letters in it.");
+            
+            Console.WriteLine("The word has " + secretWord.Length + " letters in it.\nGuess a letter:");
             for (int i = 0; i < maskedWord.Length; i++)
 
             {
-                maskedWord[i] = "*";
+                maskedWord[i] = "_ ";
                 Console.Write(maskedWord[i]);
+                
+
             }
+            
+            bool gameWon = false;
+            int lettersRevealed = 0;
+            while (!gameWon)
+            {
+                string input = Console.ReadLine();
+                for (int i = 0; i <secretWord.Length; i++)
+                {
+                    if (input == secretWord[i].ToString())
+                    {
+                        maskedWord[i] = input;
+                        lettersRevealed++;
+                    }
+                }
+                for (int i = 0; i < maskedWord.Length; i++)
+                
+                {
+                    
+                    Console.Write(maskedWord[i]);
+                }
+                Console.Write("\nGuess a letter: ");
+                if (lettersRevealed==secretWord.Length)
+                {
+                    gameWon = true;
+                }
+            }
+            
+
+            /*
             Console.WriteLine("\nGuess a letter!"); //Kommer bytas ut mot en bokstav senare
             guessedLetter = Console.ReadLine();
             if (guessedLetter.ToLower() == secretWord)
@@ -191,12 +224,13 @@ namespace HangmanAlfa
             {
                 IncorrectLetter();
             }
+            */
             //Lives(true);
         }
-        static void ShowLetter()
+        static void ShowUsedLetter()
         {
             //Visar bokstäver som använts
-            Console.WriteLine(guessedLetter);
+           // Console.WriteLine(guessedLetter);
             Console.ReadLine();
         }
         static void IncorrectLetter()
@@ -239,29 +273,36 @@ namespace HangmanAlfa
         }
         static void TryAgain()
         {
-            // Frågar om spelaren vill spela igen
-            Console.WriteLine("Try again? Y/N");
-            string testBokstav = Console.ReadLine();
-            if (testBokstav.ToUpper() == "Y")
-            {
-                tryAgain = "bok";
-            }
-            else if (testBokstav.ToUpper() == "N")
-            {
 
+           
+            // Frågar om spelaren vill spela igen
+            Console.WriteLine("Try again? (Y/N");
+            string inputTry = Console.ReadLine();
+            while (inputTry.ToUpper() != "Y" || inputTry.ToUpper() != "N")
+            {
+                
             }
+            if (inputTry.ToUpper() == "Y")
+            {
+                isTryAgain = true;
+            }
+            if (inputTry.ToUpper() == "N")
+            {
+                Quit();
+            }
+
             else
             {
-                Console.WriteLine("MEN SKRIV Y ELLER N");
+                Console.WriteLine("You have to press 'Y' or 'N', stupid!");
+                inputTry = Console.ReadLine();
             }
+                
+            
+            
 
             // anropa quit eller meny
         }
-        static void GameEngine()
-        {
-            // Kontrollerar spelares liv och gissningar 
-            //i en loop till spelets slut (provosorisk)
-        }
+        
         static void HowTo()
         {
             Console.Clear();
